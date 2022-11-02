@@ -1,0 +1,22 @@
+version: 1.0.0
+history:
+  1.0.0:
+    date: '2022-11-01'
+    title: 'First version'
+    description: 'First version. Manifest created.'
+plugin:
+  -
+    name: server/json
+    version: 1.10.0
+sys:
+  -
+    name: mercury
+    version:
+      - 2.66.0
+php:
+  version:
+    - 8.0.8
+author: null
+links: null
+description: 'API for BankID usage via banksignering.se.'
+third_part_software: null
