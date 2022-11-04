@@ -77,13 +77,15 @@ class PluginBanksigneringApi{
       return false;
     }
   }
-  public function auth(){
+  public function auth($personalNumber = null){
     $this->data->set('endpoint/auth/apiUser', $this->data->get('account/apiUser'));
     $this->data->set('endpoint/auth/password', $this->data->get('account/password'));
     $this->data->set('endpoint/auth/companyApiGuid', $this->data->get('account/companyApiGuid'));
     $this->data->set('endpoint/auth/endUserIp', wfServer::getRemoteAddr());
+    $this->data->set('endpoint/auth/personalNumber', $personalNumber);
     $result = $this->server->send($this->get_url().'auth', $this->data->get('endpoint/auth'), 'post');
     wfUser::setSession('plugin/banksignering/api/response/auth', $result);
+    wfUser::setSession('plugin/banksignering/api/endpoint/auth', $this->data->get('endpoint/auth'));
     wfUser::setSession('plugin/banksignering/api/response/auth_data', array(
       'date_time' => date('Y-m-d H:i:s'), 
       'date' => date('Y-m-d'), 
@@ -95,14 +97,16 @@ class PluginBanksigneringApi{
     $this->collectqr('auth');
     return null;
   }
-  public function sign($userVisibleData){
+  public function sign($userVisibleData, $personalNumber = null){
     $this->data->set('endpoint/sign/apiUser', $this->data->get('account/apiUser'));
     $this->data->set('endpoint/sign/password', $this->data->get('account/password'));
     $this->data->set('endpoint/sign/companyApiGuid', $this->data->get('account/companyApiGuid'));
     $this->data->set('endpoint/sign/endUserIp', wfServer::getRemoteAddr());
+    $this->data->set('endpoint/sign/personalNumber', $personalNumber);
     $this->data->set('endpoint/sign/userVisibleData', $userVisibleData);
     $result = $this->server->send($this->get_url().'sign', $this->data->get('endpoint/sign'), 'post');
     wfUser::setSession('plugin/banksignering/api/response/sign', $result);
+    wfUser::setSession('plugin/banksignering/api/endpoint/sign', $this->data->get('endpoint/sign'));
     wfUser::setSession('plugin/banksignering/api/response/sign_data', array(
       'date_time' => date('Y-m-d H:i:s'), 
       'date' => date('Y-m-d'), 

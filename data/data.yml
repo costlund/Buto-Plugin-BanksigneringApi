@@ -12,6 +12,7 @@ endpoint:
     password: "yyy"
     companyApiGuid: "zzz"
     endUserIp: ""
+    #personalNumber: "199912312395"
     personalNumber: ""
     tokenStartRequired: false
   sign:
