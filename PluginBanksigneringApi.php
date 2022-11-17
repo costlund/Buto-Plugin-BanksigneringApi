@@ -84,6 +84,13 @@ class PluginBanksigneringApi{
     $this->data->set('endpoint/auth/endUserIp', wfServer::getRemoteAddr());
     $this->data->set('endpoint/auth/personalNumber', $personalNumber);
     $result = $this->server->send($this->get_url().'auth', $this->data->get('endpoint/auth'), 'post');
+    /**
+     * Add link.
+     */
+    $result['link'] = 'https://app.bankid.com/?autostarttoken='.$result['apiCallResponse']['Response']['AutoStartToken'].'&redirect=';
+    /**
+     * 
+     */
     wfUser::setSession('plugin/banksignering/api/response/auth', $result);
     wfUser::setSession('plugin/banksignering/api/endpoint/auth', $this->data->get('endpoint/auth'));
     wfUser::setSession('plugin/banksignering/api/response/auth_data', array(
@@ -105,6 +112,13 @@ class PluginBanksigneringApi{
     $this->data->set('endpoint/sign/personalNumber', $personalNumber);
     $this->data->set('endpoint/sign/userVisibleData', $userVisibleData);
     $result = $this->server->send($this->get_url().'sign', $this->data->get('endpoint/sign'), 'post');
+    /**
+     * Add link.
+     */
+    $result['link'] = 'https://app.bankid.com/?autostarttoken='.$result['apiCallResponse']['Response']['AutoStartToken'].'&redirect=';
+    /**
+     * 
+     */
     wfUser::setSession('plugin/banksignering/api/response/sign', $result);
     wfUser::setSession('plugin/banksignering/api/endpoint/sign', $this->data->get('endpoint/sign'));
     wfUser::setSession('plugin/banksignering/api/response/sign_data', array(
