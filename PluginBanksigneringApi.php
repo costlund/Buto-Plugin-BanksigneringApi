@@ -17,6 +17,9 @@ class PluginBanksigneringApi{
     wfPlugin::includeonce('server/json');
     $this->server = new PluginServerJson();
   }
+  /**
+   * Set data.
+   */
   public function set_data($data){
     $data = new PluginWfArray($data);
     $this->data->set('account/apiUser', $data->get('apiUser'));
@@ -34,9 +37,15 @@ class PluginBanksigneringApi{
   public function unset_session(){
     wfUser::unsetSession('plugin/banksignering/api');
   }
+  /**
+   * Get session data (plugin/banksignering/api).
+   */
   public function get_session(){
     return new PluginWfArray(wfUser::getSession()->get('plugin/banksignering/api'));
   }
+  /**
+   * Get data from session (plugin/banksignering/api/response/auth).
+   */
   public function get_auth(){
     wfUser::setSession('plugin/banksignering/api/response/auth_data/time_end', time());
     wfUser::setSession('plugin/banksignering/api/response/auth_data/time_count', wfUser::getSession()->get('plugin/banksignering/api/response/auth_data/time_end')-wfUser::getSession()->get('plugin/banksignering/api/response/auth_data/time_start'));
@@ -53,6 +62,10 @@ class PluginBanksigneringApi{
   public function get_qr_string(){
     return wfUser::getSession()->get('plugin/banksignering/api/response/collectqr/apiCallResponse/qrString');
   }
+  /**
+   * Check if continue to pull data.
+   * @return bool
+   */
   public function continue(){
     if($this->success()){
       return false;
@@ -66,6 +79,10 @@ class PluginBanksigneringApi{
       return false;
     }
   }
+  /**
+   * Check if plugin/banksignering/api/response/collectstatus/apiCallResponse/Success is true and plugin/banksignering/api/response/collectstatus/apiCallResponse/StatusMessage complete.
+   * @return bool
+   */
   public function success(){
     if(
       wfUser::getSession()->get('plugin/banksignering/api/response/collectstatus/apiCallResponse/Success') 
@@ -141,6 +158,9 @@ class PluginBanksigneringApi{
     wfUser::setSession('plugin/banksignering/api/response/collectqr', $result);
     return null;
   }
+  /**
+   * Request collectstatus from api. Set session (plugin/banksignering/api/response/collectstatus). Set session (plugin/banksignering/api/response/'.$response.'_data).
+   */
   public function collectstatus($response = 'auth'){
     /**
      * 
