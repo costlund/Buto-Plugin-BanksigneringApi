@@ -1,5 +1,9 @@
-version: 1.2.1
+version: 1.3.0
 history:
+  1.3.0:
+    date: '2024-05-30'
+    title: Log
+    description: 'Add session param plugin/banksignering/api/log method, ip.'
   1.2.1:
     date: '2023-09-11'
     title: Versions

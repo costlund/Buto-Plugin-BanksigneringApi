@@ -108,6 +108,8 @@ class PluginBanksigneringApi{
     /**
      * 
      */
+    wfUser::setSession('plugin/banksignering/api/log/method', 'QR'); // This could change to SameUnit if user click on that button.
+    wfUser::setSession('plugin/banksignering/api/log/ip', wfServer::getRemoteAddr());
     wfUser::setSession('plugin/banksignering/api/response/auth', $result);
     wfUser::setSession('plugin/banksignering/api/endpoint/auth', $this->data->get('endpoint/auth'));
     wfUser::setSession('plugin/banksignering/api/response/auth_data', array(
