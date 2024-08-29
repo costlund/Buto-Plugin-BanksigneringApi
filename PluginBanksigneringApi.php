@@ -49,15 +49,47 @@ class PluginBanksigneringApi{
   public function get_auth(){
     wfUser::setSession('plugin/banksignering/api/response/auth_data/time_end', time());
     wfUser::setSession('plugin/banksignering/api/response/auth_data/time_count', wfUser::getSession()->get('plugin/banksignering/api/response/auth_data/time_end')-wfUser::getSession()->get('plugin/banksignering/api/response/auth_data/time_start'));
+    /**
+     * QR
+     */
+    if(wfUser::getSession()->get('plugin/banksignering/api/response/auth/apiCallResponse/Response/QrImage')){
+      wfUser::setSession('plugin/banksignering/api/response/auth/apiCallResponse/Response/QrImageWithTime', wfUser::getSession()->get('plugin/banksignering/api/response/auth/apiCallResponse/Response/QrImage').'?_time='.date('ymdHis'));
+    }
+    /**
+     * 
+     */
     return wfUser::getSession()->get('plugin/banksignering/api/response/auth');
   }
   public function get_sign(){
     wfUser::setSession('plugin/banksignering/api/response/sign_data/time_end', time());
     wfUser::setSession('plugin/banksignering/api/response/sign_data/time_count', wfUser::getSession()->get('plugin/banksignering/api/response/sign_data/time_end')-wfUser::getSession()->get('plugin/banksignering/api/response/sign_data/time_start'));
+    /**
+     * QR
+     */
+    if(wfUser::getSession()->get('plugin/banksignering/api/response/sign/apiCallResponse/Response/QrImage')){
+      wfUser::setSession('plugin/banksignering/api/response/sign/apiCallResponse/Response/QrImageWithTime', wfUser::getSession()->get('plugin/banksignering/api/response/sign/apiCallResponse/Response/QrImage').'?_time='.date('ymdHis'));
+    }
+    /**
+     * 
+     */
     return wfUser::getSession()->get('plugin/banksignering/api/response/sign');
   }
   public function get_qr_image(){
-    return wfUser::getSession()->get('plugin/banksignering/api/response/collectqr/apiCallResponse/qrImage');
+    /**
+     * 
+     */
+    $method = 'auth';
+    if(wfUser::getSession()->get('plugin/banksignering/api/response/sign')){
+      $method = 'sign';
+    }
+    /**
+     * 
+     */
+    if(!wfUser::getSession()->get('plugin/banksignering/api/response/'.$method.'/apiCallResponse/Response/QrImageWithTime')){
+      return wfUser::getSession()->get('plugin/banksignering/api/response/collectqr/apiCallResponse/qrImage');
+    }else{
+      return wfUser::getSession()->get('plugin/banksignering/api/response/'.$method.'/apiCallResponse/Response/QrImageWithTime');
+    }
   }
   public function get_qr_string(){
     return wfUser::getSession()->get('plugin/banksignering/api/response/collectqr/apiCallResponse/qrString');
@@ -100,6 +132,7 @@ class PluginBanksigneringApi{
     $this->data->set('endpoint/auth/companyApiGuid', $this->data->get('account/companyApiGuid'));
     $this->data->set('endpoint/auth/endUserIp', wfServer::getRemoteAddr());
     $this->data->set('endpoint/auth/personalNumber', $personalNumber);
+    $this->data->set('endpoint/auth/getQr', true);
     $result = $this->server->send($this->get_url().'auth', $this->data->get('endpoint/auth'), 'post');
     /**
      * Add link.
@@ -130,6 +163,7 @@ class PluginBanksigneringApi{
     $this->data->set('endpoint/sign/companyApiGuid', $this->data->get('account/companyApiGuid'));
     $this->data->set('endpoint/sign/endUserIp', wfServer::getRemoteAddr());
     $this->data->set('endpoint/sign/personalNumber', $personalNumber);
+    $this->data->set('endpoint/sign/getQr', true);
     $this->data->set('endpoint/sign/userVisibleData', $userVisibleData);
     $result = $this->server->send($this->get_url().'sign', $this->data->get('endpoint/sign'), 'post');
     /**
